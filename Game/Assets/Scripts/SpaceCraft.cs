@@ -7,8 +7,8 @@ public class SpaceCraft : MonoBehaviour {
     public const float MAX_PLAYER_HEALTH = 100f;
 
     private Rigidbody2D rigidBody;
-    private float acceleration = 100f;
-    private Cannon cannon;
+    private float acceleration = 200f;
+    private Cannon[] cannons;
 
     public float Health { get { return health; } }
     private float health = 100f;
@@ -20,18 +20,19 @@ public class SpaceCraft : MonoBehaviour {
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        cannon = GetComponentInChildren<Cannon>();
+        cannons = GetComponentsInChildren<Cannon>();
         rigidBody.drag = 1f;
     }
 
     public void Accelerate()
     {
-        rigidBody.AddForce(transform.right * acceleration * Time.deltaTime, ForceMode2D.Force);
+        rigidBody.AddForce(transform.up * acceleration * Time.deltaTime, ForceMode2D.Force);
     }
 
     public void Shoot()
     {
-        cannon.Shoot();
+        foreach(Cannon cannon in cannons)
+            cannon.Shoot();
     }
 
     public void TakeDamage(float dmg)
